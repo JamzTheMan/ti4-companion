@@ -42,8 +42,10 @@ function FactionNutshells({
     const factionName = t(`factions.${faction}.name`)
     const cardColor =
       typeof color === 'string' ? plasticColors[color] || color : ''
+    const tintAlpha =
+      cardColor.toLowerCase() === plasticColors.black ? '80' : '40'
     const cardBackground = /^#[\da-f]{6}$/i.test(cardColor || '')
-      ? `${cardColor}26`
+      ? `${cardColor}${tintAlpha}`
       : undefined
 
     const player = (
