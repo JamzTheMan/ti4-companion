@@ -103,8 +103,8 @@ export const useFactionsData = (versionOverride) => {
           cheatSheetPath:
             factionData.versionOverrides &&
             factionData.versionOverrides.includes(versionToUse)
-              ? `/factionCheatsheets/${factionData.key.toLowerCase()}_${versionToUse}.png`
-              : `/factionCheatsheets/${factionData.key.toLowerCase()}.png`,
+              ? `/factionCheatsheets/${factionData.key.toLowerCase()}_${versionToUse}.webp`
+              : `/factionCheatsheets/${factionData.key.toLowerCase()}.webp`,
         })),
     }),
     [list, versionToUse],
