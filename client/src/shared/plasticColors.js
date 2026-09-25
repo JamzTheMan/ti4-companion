@@ -40,15 +40,15 @@ export const usePlasticColors = () => {
   const colorsWithHexValues = useMemo(
     () =>
       Object.fromEntries(
-        Object.entries(plasticColorsContext?.colors || {}).map(
-          ([key, value]) => [
+        Object.entries(plasticColorsContext?.colors || {})
+          .filter(([, value]) => typeof value === 'string' && value.length > 0)
+          .map(([key, value]) => [
             key.toLowerCase(),
             {
               color: value.startsWith('#') ? null : value,
               hex: value.startsWith('#') ? value : colors[value],
             },
-          ],
-        ),
+          ]),
       ),
     [plasticColorsContext?.colors],
   )

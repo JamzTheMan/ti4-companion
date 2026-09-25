@@ -3,6 +3,7 @@ using Server.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Server.Domain
@@ -64,7 +65,9 @@ namespace Server.Domain
                 SessionEnd = payload.IsSplit ? payload.SessionEnd : string.Empty,
                 Duration = payload.Duration,
                 VpCount = payload.VpCount > 0 ? payload.VpCount : 10,
-                Colors = payload.Colors,
+                Colors = (payload.Colors ?? new Dictionary<string, string>())
+                    .Where(color => !string.IsNullOrEmpty(color.Value))
+                    .ToDictionary(color => color.Key, color => color.Value),
                 MapPositions = payload.MapPositions ?? new List<MapPosition>(),
             };
         }

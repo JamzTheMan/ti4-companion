@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Domain;
-using Server.Domain.Exceptions;
 using Server.Persistence;
 using System;
 using System.Linq;
@@ -52,7 +51,12 @@ namespace Server.Infra
             var sessionList = await this.sessionContext.SessionLists.FindAsync(sessionListId);
             if (sessionList == null)
             {
-                throw new NotFoundException("SessionList");
+                sessionList = new SessionList
+                {
+                    Id = sessionListId,
+                    CreatedAt = DateTimeOffset.UtcNow,
+                };
+                await this.sessionContext.SessionLists.AddAsync(sessionList);
             }
 
             newSession.SessionLists.Add(sessionList);

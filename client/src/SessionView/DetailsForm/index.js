@@ -92,7 +92,11 @@ function DetailsForm({ disabled, session }) {
       sessionEnd: sessionEnd || getNow(),
       duration: Number(duration),
       vpCount,
-      colors,
+      colors: Object.fromEntries(
+        Object.entries(colors).filter(
+          ([, color]) => typeof color === 'string' && color.length > 0,
+        ),
+      ),
       mapPositions,
     }
 

@@ -86,6 +86,10 @@ namespace ServerTests.Handlers
             TestName = "ShouldUseGivenSessionEndWhenSplitSessionGiven",
             ExpectedResult = "{\"SessionDisplayName\":\"test\",\"IsTTS\":false,\"IsSplit\":true,\"SessionStart\":null,\"SessionEnd\":\"2022-12-06\",\"Duration\":0.0,\"VpCount\":11,\"Colors\":{},\"MapPositions\":[]}")]
         [TestCase(
+            "{\"SessionDisplayName\":\"test\",\"IsTTS\":false,\"IsSplit\":false,\"SessionStart\":null,\"SessionEnd\":\"\",\"Duration\":0.0,\"VpCount\":11,\"Colors\":{\"The_Sol\":\"blue\",\"The_Hacan\":null,\"The_Embers_of_Muaat\":\"\"}}",
+            TestName = "ShouldRemoveUnsetColors",
+            ExpectedResult = "{\"SessionDisplayName\":\"test\",\"IsTTS\":false,\"IsSplit\":false,\"SessionStart\":null,\"SessionEnd\":\"\",\"Duration\":0.0,\"VpCount\":11,\"Colors\":{\"The_Sol\":\"blue\"},\"MapPositions\":[]}")]
+        [TestCase(
             "{\"SessionDisplayName\":\"test\",\"IsTTS\":false,\"IsSplit\":true,\"SessionStart\":null,\"SessionEnd\":\"2022-12-06\",\"Duration\":0.0,\"VpCount\":11,\"Colors\":{}}",
             TestName = "ShouldReturnGivenVpCountWhenPositiveVpCountGiven",
             ExpectedResult = "{\"SessionDisplayName\":\"test\",\"IsTTS\":false,\"IsSplit\":true,\"SessionStart\":null,\"SessionEnd\":\"2022-12-06\",\"Duration\":0.0,\"VpCount\":11,\"Colors\":{},\"MapPositions\":[]}")]
