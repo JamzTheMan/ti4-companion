@@ -88,6 +88,18 @@ function FactionNutshells({
       </span>
     )
     const forcedEmptyAvatarValue = ' '
+    const avatar = (
+      <Avatar
+        alt={player}
+        src={factionData.image}
+        style={{
+          backgroundColor: color || 'rgba(255, 255, 255, .5)',
+        }}
+        variant="rounded"
+      >
+        {forcedEmptyAvatarValue}
+      </Avatar>
+    )
 
     return (
       <>
@@ -102,18 +114,10 @@ function FactionNutshells({
                       sessionId,
                     })}
                   >
-                    <Avatar
-                      alt={player}
-                      style={{
-                        backgroundColor: color || 'rgba(255, 255, 255, .5)',
-                      }}
-                      variant="rounded"
-                    >
-                      {forcedEmptyAvatarValue}
-                    </Avatar>
+                    {avatar}
                   </Link>
                 ) : (
-                  <Avatar alt={player} src={factionData.image} />
+                  avatar
                 )
               }
               title={player}
