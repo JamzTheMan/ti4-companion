@@ -48,7 +48,7 @@ function FactionFlag(
   const getPlasticColor = usePlasticColors()
   const plasticColor = getPlasticColor(factionKey)
   const classes = useFlagStyles({
-    borderWidth: borderWidth ?? '2px',
+    borderWidth: borderWidth ?? '3px',
     selected,
     width,
     height,

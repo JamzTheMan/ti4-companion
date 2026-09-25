@@ -45,7 +45,7 @@ export const usePlasticColors = () => {
           .map(([key, value]) => [
             key.toLowerCase(),
             {
-              color: value.startsWith('#') ? null : value,
+              color: value.startsWith('#') ? colorNames[value] : value,
               hex: value.startsWith('#') ? value : colors[value],
             },
           ]),
