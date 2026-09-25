@@ -15,6 +15,7 @@ import { LocalLibrary, PhotoLibrary, Info } from '@material-ui/icons'
 import { useTranslation, Trans } from '../../../i18n'
 import { SESSION_VIEW_ROUTES } from '../../../shared/constants'
 import { ColorBox } from '../../../shared/ColorBox'
+import { colors as plasticColors } from '../../../shared/plasticColors'
 import { getMapPositionName, getMapPositionColor } from '../../../shared'
 import { useFactionData } from '../../../GameComponents'
 import { useSessionContext } from '../../useSessionContext'
@@ -39,6 +40,11 @@ function FactionNutshells({
   return players.map(({ atTable, faction, playerName, color, speaker }) => {
     const factionData = getFactionData(faction)
     const factionName = t(`factions.${faction}.name`)
+    const cardColor =
+      typeof color === 'string' ? plasticColors[color] || color : ''
+    const cardBackground = /^#[\da-f]{6}$/i.test(cardColor || '')
+      ? `${cardColor}26`
+      : undefined
 
     const player = (
       <span>
@@ -104,7 +110,10 @@ function FactionNutshells({
     return (
       <>
         <Grid key={factionData.key} item sm={6} xs={12}>
-          <Card className={classes.factionCard}>
+          <Card
+            className={classes.factionCard}
+            style={{ backgroundColor: cardBackground }}
+          >
             <CardHeader
               avatar={
                 playerName || color ? (
