@@ -32,12 +32,21 @@ const useStyles = makeStyles({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     color: 'white',
   },
+  factionCardHeader: {
+    paddingTop: '8px',
+    paddingBottom: '2px',
+  },
+  factionCardActions: {
+    padding: '4px 8px',
+  },
   factionCardIcon: {
     color: 'white',
   },
   media: {
     height: 0,
-    paddingTop: '71.25%',
+    paddingTop: '60%',
+    marginLeft: '8px',
+    marginRight: '8px',
     cursor: 'pointer',
     backgroundSize: 'contain',
   },

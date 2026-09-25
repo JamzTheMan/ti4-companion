@@ -120,6 +120,7 @@ function FactionNutshells({
                   avatar
                 )
               }
+              classes={{ root: classes.factionCardHeader }}
               title={player}
             />
             <CardMedia
@@ -128,7 +129,10 @@ function FactionNutshells({
               onClick={() => setFactionNutshellKey(factionData.key)}
               title={factionName}
             />
-            <CardActions disableSpacing>
+            <CardActions
+              classes={{ root: classes.factionCardActions }}
+              disableSpacing
+            >
               <Tooltip
                 placement="top"
                 title={t('sessionView.overview.goToWiki')}
