@@ -46,6 +46,7 @@ $ docker compose --env-file .env.dev up -d
 
 This will run postgres, backend and frontend services in dockers.
 Check docker-compose which services are available on which host ports.
+The frontend dependencies are installed automatically when the client service starts.
 
 ### initial data
 
@@ -54,7 +55,7 @@ If you run the application against an empty database, 2 sessions will be created
 - `1811a152-b64c-41cd-bdfd-8885fdfb7620` with password "test" for editing
 - `6fd5c725-30cd-4320-8889-c2f6427ba365` with password "test" for editing
 
-so you can check the installation by trying to hit `https://localhost:3000/6fd5c725-30cd-4320-8889-c2f6427ba365` or the other one
+so you can check the installation by trying to hit `http://localhost:3000/6fd5c725-30cd-4320-8889-c2f6427ba365` or the other one
 
 ## to add a migration
 
