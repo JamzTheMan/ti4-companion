@@ -1,11 +1,12 @@
 import { useCallback, useMemo, useState, useContext } from 'react'
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, IconButton, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { useTranslation } from '../../../../i18n'
 import useSmallViewport from '../../../../shared/useSmallViewport'
 import { ComboDispatchContext } from '../../../../state'
 import Objective from '../../../../shared/Objective'
+import Confirmation from '../../../../shared/Confirmation'
 import { useFullscreen } from '../../../../Fullscreen'
 import { useObjectives } from '../../../../GameComponents'
 
@@ -41,6 +42,7 @@ function PublicObjectives({ editable, session }) {
   const { objectives: availableObjectives, queryInfo } = useObjectives()
   const sessionObjectives = useMemo(() => session.objectives || [], [session])
   const [addObjectiveOpen, setAddObjectiveOpen] = useState(false)
+  const [pendingScore, setPendingScore] = useState(null)
 
   const objectiveAdded = useCallback(
     (objective) => {
@@ -57,7 +59,7 @@ function PublicObjectives({ editable, session }) {
     ({ change, objective }) => {
       const factionPoints = session.points.find(
         ({ faction }) => faction === change.factionKey,
-      )?.points
+      )?.points ?? 0
       const objectivePoints = availableObjectives[objective.slug].points
 
       if (change.event === 'selected') {
@@ -84,6 +86,12 @@ function PublicObjectives({ editable, session }) {
     },
     [comboDispatch, session.id, session.points, availableObjectives],
   )
+  const confirmObjectiveScore = useCallback(() => {
+    if (pendingScore) {
+      objectiveScored(pendingScore)
+      setPendingScore(null)
+    }
+  }, [objectiveScored, pendingScore])
 
   if (!queryInfo.isFetched) {
     return null
@@ -105,7 +113,7 @@ function PublicObjectives({ editable, session }) {
                 factions: session.factions,
                 value: sessionObjective.scoredBy,
                 onChange: (change) =>
-                  objectiveScored({ change, objective: sessionObjective }),
+                  setPendingScore({ change, objective: sessionObjective }),
               }}
               session={session}
               size={
@@ -143,6 +151,34 @@ function PublicObjectives({ editable, session }) {
           open={addObjectiveOpen}
         />
       )}
+      <Confirmation
+        cancel={() => setPendingScore(null)}
+        confirm={confirmObjectiveScore}
+        open={Boolean(pendingScore)}
+        title={t('publicObjectives.confirmation.title')}
+      >
+        {pendingScore && (
+          <Typography>
+            {pendingScore.change.event === 'selected'
+              ? t('publicObjectives.confirmation.scorePrefix')
+              : t('publicObjectives.confirmation.unscorePrefix')}{' '}
+            <strong>
+              {t(`objectives.${pendingScore.objective.slug}.name`)}
+            </strong>{' '}
+            {t('publicObjectives.confirmation.for')} <strong>
+              {t(`factions.${pendingScore.change.factionKey}.name`)}
+            </strong>{' '}
+            (
+            <strong>
+              {session.players.find(
+                ({ faction }) => faction === pendingScore.change.factionKey,
+              )?.playerName ||
+                t('publicObjectives.confirmation.unknownPlayer')}
+            </strong>
+            )?
+          </Typography>
+        )}
+      </Confirmation>
     </>
   )
 }

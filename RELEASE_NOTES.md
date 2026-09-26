@@ -3,6 +3,13 @@
 You will find here a log of features introduced in the app.
 Bear in mind that release notes before 2022-08-14 were compiled post-factum and should not be considered accurate.
 
+## 2026-09-26
+- [feat] Import a completed TIDraft game using its game URL. The import includes factions, player names, player colors (mapped to this app's color palette), table order, and the shared galaxy map image. Slices are not imported. Session names are generated from the TIDraft URL, and the source draft is linked from the session overview and details.
+- [feat] Associate player names and colors with factions and edit them later in session details.
+- [feat] Includes the Drahn Consortium and updated faction reference sheets
+- [feat] Converted all faction sheets to WebP images to reduce image sizes and imported updated Thunders Edge versions from TI4Draft.com
+- [feat] Added confirmation dialog for scoring objectives
+
 ## 2023-11-11
 - [feat] allowed users to copy and input session list ids
 

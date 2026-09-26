@@ -22,13 +22,13 @@ Every bit counts and keeps the creator even more motivated to keep going!
 
 - Import a completed TIDraft game using its game URL. The import includes
   factions, player names, player colors (mapped to this app's color palette),
-  table order, and the shared galaxy map image. Slices are not imported. 
-- Imported session names are generated from the TIDraft URL, and the source
+  table order, and the shared galaxy map image. Session names are generated from the TIDraft URL. (Slices are not imported)
   draft is linked from the session overview and details.
 - Associate player names and colors with factions and edit them later in
   session details.
 - Includes the Drahn Consortium and updated faction reference sheets
 - Converted all faction sheets to WebP images to reduce image sizes and imported updated Thunders Edge versions from TI4Draft.com
+- Added confirmation dialog for scoring objectives
 
 For more information, see [Pax Magnifica](https://paxmagnifica.com).
 

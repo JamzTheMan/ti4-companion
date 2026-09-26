@@ -44,7 +44,7 @@ test('should add first point to faction when stage one objective is scored', asy
     remote: true,
   }
 
-  const { findByTitle } = renderWithProviders(
+  const { findByTitle, findByText } = renderWithProviders(
     getTestQueryClient(),
     <ComboDispatchContext.Provider value={dispatch}>
       <PublicObjectives editable session={mockSessionObject} />
@@ -55,6 +55,10 @@ test('should add first point to faction when stage one objective is scored', asy
   fireEvent.click(await findByTitle('The Universities of Jol-Nar (Player 2)'))
 
   // then
+  expect(dispatch).not.toHaveBeenCalled()
+  expect(await findByText('The Universities of Jol-Nar')).toBeTruthy()
+  expect(await findByText('Player 2')).toBeTruthy()
+  fireEvent.click(await findByText('ok'))
   expect(dispatch).toHaveBeenCalledWith({
     type: 'ObjectiveScored',
     payload: {
@@ -95,7 +99,7 @@ test('should add one point to faction points when stage one objective is scored'
     remote: true,
   }
 
-  const { findByTitle } = renderWithProviders(
+  const { findByTitle, findByText } = renderWithProviders(
     getTestQueryClient(),
     <ComboDispatchContext.Provider value={dispatch}>
       <PublicObjectives editable session={mockSessionObject} />
@@ -106,6 +110,10 @@ test('should add one point to faction points when stage one objective is scored'
   fireEvent.click(await findByTitle('The Universities of Jol-Nar (Player 2)'))
 
   // then
+  expect(dispatch).not.toHaveBeenCalled()
+  expect(await findByText('The Universities of Jol-Nar')).toBeTruthy()
+  expect(await findByText('Player 2')).toBeTruthy()
+  fireEvent.click(await findByText('ok'))
   expect(dispatch).toHaveBeenCalledWith({
     type: 'ObjectiveScored',
     payload: {
@@ -146,7 +154,7 @@ test('should add two points to faction with 0 points when second stage objective
     remote: true,
   }
 
-  const { findByTitle } = renderWithProviders(
+  const { findByTitle, findByText } = renderWithProviders(
     getTestQueryClient(),
     <ComboDispatchContext.Provider value={dispatch}>
       <PublicObjectives editable session={mockSessionObject} />
@@ -157,6 +165,10 @@ test('should add two points to faction with 0 points when second stage objective
   fireEvent.click(await findByTitle('The Universities of Jol-Nar (Player 2)'))
 
   // then
+  expect(dispatch).not.toHaveBeenCalled()
+  expect(await findByText('The Universities of Jol-Nar')).toBeTruthy()
+  expect(await findByText('Player 2')).toBeTruthy()
+  fireEvent.click(await findByText('ok'))
   expect(dispatch).toHaveBeenCalledWith({
     type: 'ObjectiveScored',
     payload: {
@@ -197,7 +209,7 @@ test('should add two points to faction with points when second stage objective i
     remote: true,
   }
 
-  const { findByTitle } = renderWithProviders(
+  const { findByTitle, findByText } = renderWithProviders(
     getTestQueryClient(),
     <ComboDispatchContext.Provider value={dispatch}>
       <PublicObjectives editable session={mockSessionObject} />
@@ -208,6 +220,10 @@ test('should add two points to faction with points when second stage objective i
   fireEvent.click(await findByTitle('The Universities of Jol-Nar (Player 2)'))
 
   // then
+  expect(dispatch).not.toHaveBeenCalled()
+  expect(await findByText('The Universities of Jol-Nar')).toBeTruthy()
+  expect(await findByText('Player 2')).toBeTruthy()
+  fireEvent.click(await findByText('ok'))
   expect(dispatch).toHaveBeenCalledWith({
     type: 'ObjectiveScored',
     payload: {
