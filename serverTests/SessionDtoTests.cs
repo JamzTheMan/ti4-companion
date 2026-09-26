@@ -297,6 +297,8 @@ namespace ServerTests
                         Factions = new List<string> { "The_Arborec" },
                         PlayerNames = new Dictionary<string, string> { { "The_Arborec", "Jeff" } },
                         Colors = new Dictionary<string, string> { { "The_Arborec", "blue" } },
+                        SessionDisplayName = "Corner Rebellion Speed",
+                        TidraftUrl = "https://tidraft.com/draft/corner-rebellion-speed",
                     }),
                 },
                 new GameEvent
@@ -319,6 +321,8 @@ namespace ServerTests
                     PlayerName = "Jeffrey",
                     Color = "blue",
                 });
+            sessionDto.DisplayName.Should().Be("Corner Rebellion Speed");
+            sessionDto.TidraftUrl.Should().Be("https://tidraft.com/draft/corner-rebellion-speed");
         }
     }
 }

@@ -23,7 +23,11 @@ import CONFIG from '../config'
 import { handleErrors } from '../shared/errorHandling'
 
 import { PasswordProtectionDialog } from './PasswordProtectionDialog'
-import { getTidraftSlug, parseTidraftImport } from './tidraftImport'
+import {
+  getTidraftSessionName,
+  getTidraftSlug,
+  parseTidraftImport,
+} from './tidraftImport'
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +54,8 @@ export function SetFactions() {
   const [selectedFactions, setSelected] = useState([])
   const [playerNames, setPlayerNames] = useState({})
   const [colors, setColors] = useState({})
+  const [sessionDisplayName, setSessionDisplayName] = useState('')
+  const [tidraftImportUrl, setTidraftImportUrl] = useState('')
   const [tidraftUrl, setTidraftUrl] = useState('')
   const [importError, setImportError] = useState('')
   const [importing, setImporting] = useState(false)
@@ -85,6 +91,8 @@ export function SetFactions() {
         factions: selectedFactions,
         playerNames,
         colors,
+        sessionDisplayName,
+        tidraftUrl: tidraftImportUrl,
         password,
       })
       history.push(
@@ -101,6 +109,8 @@ export function SetFactions() {
       gameVersion,
       playerNames,
       colors,
+      sessionDisplayName,
+      tidraftImportUrl,
     ],
   )
 
@@ -113,10 +123,13 @@ export function SetFactions() {
       const response = await fetch(`${CONFIG.apiUrl}/api/tidraft/${slug}`)
       const loaderData = await handleErrors(response).then((r) => r.text())
       const imported = parseTidraftImport(loaderData)
+      const url = new URL(tidraftUrl.trim())
 
       setSelected(imported.factions)
       setPlayerNames(imported.playerNames)
       setColors(imported.colors)
+      setSessionDisplayName(getTidraftSessionName(url.toString()))
+      setTidraftImportUrl(`${url.origin}${url.pathname}`)
       setGameVersion(imported.gameVersion)
     } catch (error) {
       setImportError(error.message || 'Unable to import this TIDraft game.')

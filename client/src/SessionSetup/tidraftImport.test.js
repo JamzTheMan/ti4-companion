@@ -1,4 +1,8 @@
-import { getTidraftSlug, parseTidraftImport } from './tidraftImport'
+import {
+  getTidraftSessionName,
+  getTidraftSlug,
+  parseTidraftImport,
+} from './tidraftImport'
 import { GameVersion } from '../GameComponents/GameVersionPicker'
 
 describe('TIDraft import', () => {
@@ -7,6 +11,12 @@ describe('TIDraft import', () => {
       'example-game',
     )
     expect(() => getTidraftSlug('https://example.com/draft/example')).toThrow()
+  })
+
+  it('uses the TIDraft slug as a title-cased session name', () => {
+    expect(
+      getTidraftSessionName('https://tidraft.com/draft/corner-rebellion-speed'),
+    ).toBe('Corner Rebellion Speed')
   })
 
   it('imports faction, player, color, and seat selections', () => {

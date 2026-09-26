@@ -186,6 +186,18 @@ function DetailsForm({ disabled, session }) {
                     value={sessionDisplayName}
                   />
                 </FormControl>
+                {session.tidraftUrl && (
+                  <Typography>
+                    Imported from{' '}
+                    <a
+                      href={session.tidraftUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      TIDraft
+                    </a>
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <FormGroup row>

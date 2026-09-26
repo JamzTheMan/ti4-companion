@@ -23,6 +23,8 @@ namespace Server.Domain
             this.RandomPlayerOrder = (int[])payload.RandomPlayerOrder.Clone();
             this.PlayerNames = new Dictionary<string, string>(payload.PlayerNames ?? new Dictionary<string, string>());
             this.Colors = new Dictionary<string, string>(payload.Colors ?? new Dictionary<string, string>());
+            this.SessionDisplayName = payload.SessionDisplayName;
+            this.TidraftUrl = payload.TidraftUrl;
         }
 
         public string SetupType { get; set; }
@@ -40,5 +42,9 @@ namespace Server.Domain
         public Dictionary<string, string> PlayerNames { get; set; }
 
         public Dictionary<string, string> Colors { get; set; }
+
+        public string SessionDisplayName { get; set; }
+
+        public string TidraftUrl { get; set; }
     }
 }

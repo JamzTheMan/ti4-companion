@@ -171,6 +171,13 @@ export function getTidraftSlug(value) {
   return match[1]
 }
 
+export function getTidraftSessionName(value) {
+  return getTidraftSlug(value)
+    .split('-')
+    .map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+    .join(' ')
+}
+
 function decodeLoaderData(serialized) {
   let table
   try {

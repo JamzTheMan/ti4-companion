@@ -26,6 +26,8 @@ namespace Server.Controllers
             this.CreatedAt = session.CreatedAt;
             this.Locked = session.Locked;
             this.Editable = !session.Locked;
+            this.DisplayName = this.Setup.SessionDisplayName;
+            this.TidraftUrl = this.Setup.TidraftUrl;
             this.SetSessionDetails(session.Events);
             this.Draft = new DraftDto(session);
             this.PlayerNames = this.GetPlayerNames(session.Events);
@@ -72,6 +74,8 @@ namespace Server.Controllers
         }
 
         public string DisplayName { get; internal set; }
+
+        public string TidraftUrl { get; internal set; }
 
         public bool TTS { get; internal set; }
 
