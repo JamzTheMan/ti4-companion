@@ -121,7 +121,7 @@ function VictoryPoints({ editable, target, onChange, points }) {
   const smallViewport = useSmallViewport()
   const { fullscreen } = useFullscreen()
   const pointsToShow = Math.max(target, ...points.map((p) => p.points))
-  const inputWidth = 100 / (pointsToShow + 1)
+  const inputWidth = (smallViewport ? 225: 100) / (pointsToShow + 1)
   const classes = useStyles({ inputWidth, fullscreen })
   const vpImages = pointsToShow <= 10 ? vp10_images : vp14_images
 
