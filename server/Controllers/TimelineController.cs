@@ -90,7 +90,7 @@ namespace Server.Controllers
         public async Task<IEnumerable<TimelineEvent>> Get([FromRoute] Guid sessionId)
         {
             var sessionFromDb = await this.repository.GetByIdWithEvents(sessionId);
-            var timeline = new Timeline(sessionFromDb);
+            var timeline = new Timeline(sessionFromDb, this.configuration["PublicBlobBaseUrl"]);
 
             return timeline
                 .AddSessionSummary()

@@ -145,7 +145,7 @@ namespace Server.Controllers
             await this.repository.SaveSessionToListAsync(this.HttpContext.Items["ListIdentifier"].ToString(), newSession);
             await this.sessionContext.SaveChangesAsync();
 
-            var dto = new SessionDto(newSession);
+            var dto = new SessionDto(newSession, this.configuration["PublicBlobBaseUrl"]);
             dto.Secret = (await this.authorization.GenerateTokenFor(sessionId)).Value;
             if (!string.IsNullOrWhiteSpace(payload.Password))
             {
@@ -210,7 +210,7 @@ namespace Server.Controllers
             await this.repository.RememberSessionInList(this.HttpContext.Items["ListIdentifier"].ToString(), sessionFromDb);
             await this.repository.SaveChangesAsync();
 
-            var sessionDto = new SessionDto(sessionFromDb);
+            var sessionDto = new SessionDto(sessionFromDb, this.configuration["PublicBlobBaseUrl"]);
 
             return sessionDto;
         }

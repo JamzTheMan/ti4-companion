@@ -1,0 +1,107 @@
+services:
+  client:
+    build:
+      context: ../../client
+      dockerfile: Dockerfile.production
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ti4.rule=Host(`ti4.nerps.net`)"
+      - "traefik.http.routers.ti4.entrypoints=proxy"
+      - "traefik.http.routers.ti4.tls=true"
+      - "traefik.http.routers.ti4.middlewares=ti4-auth"
+      - "traefik.http.services.ti4.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.ti4-auth.basicauth.users=${TRAEFIK_BASIC_AUTH_USERS:?Set TRAEFIK_BASIC_AUTH_USERS in Portainer}"
+      - "traefik.http.middlewares.ti4-auth.basicauth.removeheader=true"
+
+  server:
+    build:
+      context: ../../server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      AllowedOrigins: '["https://ti4.nerps.net"]'
+      PublicBlobBaseUrl: https://ti4.nerps.net/storage
+    secrets:
+      - postgres_password
+      - blob_storage_connection
+    depends_on:
+      postgres:
+        condition: service_healthy
+      storage:
+        condition: service_started
+    networks:
+      - proxy
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ti4-api.rule=Host(`ti4.nerps.net`) && (PathPrefix(`/api`) || PathPrefix(`/sessionHub`))"
+      - "traefik.http.routers.ti4-api.entrypoints=proxy"
+      - "traefik.http.routers.ti4-api.tls=true"
+      - "traefik.http.routers.ti4-api.middlewares=ti4-auth@docker"
+      - "traefik.http.services.ti4-api.loadbalancer.server.port=8080"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ti4companion
+      POSTGRES_USER: ti4companion
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ti4companion -d ti4companion"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend
+
+  storage:
+    image: mcr.microsoft.com/azure-storage/azurite:3.33.0
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'export AZURITE_ACCOUNTS="ti4blob:$$(cat /run/secrets/azurite_key)" && exec azurite --blobHost 0.0.0.0 --location /data'
+    secrets:
+      - azurite_key
+    volumes:
+      - blob_data:/data
+    networks:
+      - backend
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.ti4-storage.rule=Host(`ti4.nerps.net`) && PathPrefix(`/storage/`)"
+      - "traefik.http.routers.ti4-storage.entrypoints=proxy"
+      - "traefik.http.routers.ti4-storage.tls=true"
+      - "traefik.http.routers.ti4-storage.middlewares=ti4-auth@docker,ti4-storage-strip"
+      - "traefik.http.services.ti4-storage.loadbalancer.server.port=10000"
+      - "traefik.http.middlewares.ti4-storage-strip.stripprefix.prefixes=/storage"
+
+networks:
+  proxy:
+    external: true
+    name: proxy
+  backend: {}
+
+volumes:
+  postgres_data:
+  blob_data:
+
+secrets:
+  postgres_password:
+    file: ${SECRETS_DIR:?Set SECRETS_DIR in Portainer}/postgres_password
+  blob_storage_connection:
+    file: ${SECRETS_DIR:?Set SECRETS_DIR in Portainer}/blob_storage_connection
+  azurite_key:
+    file: ${SECRETS_DIR:?Set SECRETS_DIR in Portainer}/azurite_key
