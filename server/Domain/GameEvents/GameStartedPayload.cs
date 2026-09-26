@@ -25,6 +25,7 @@ namespace Server.Domain
             this.Colors = new Dictionary<string, string>(payload.Colors ?? new Dictionary<string, string>());
             this.SessionDisplayName = payload.SessionDisplayName;
             this.TidraftUrl = payload.TidraftUrl;
+            this.TidraftMapUrl = payload.TidraftMapUrl;
         }
 
         public string SetupType { get; set; }
@@ -46,5 +47,7 @@ namespace Server.Domain
         public string SessionDisplayName { get; set; }
 
         public string TidraftUrl { get; set; }
+
+        public string TidraftMapUrl { get; set; }
     }
 }

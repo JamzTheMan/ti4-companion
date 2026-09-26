@@ -56,6 +56,7 @@ export function SetFactions() {
   const [colors, setColors] = useState({})
   const [sessionDisplayName, setSessionDisplayName] = useState('')
   const [tidraftImportUrl, setTidraftImportUrl] = useState('')
+  const [tidraftMapUrl, setTidraftMapUrl] = useState('')
   const [tidraftUrl, setTidraftUrl] = useState('')
   const [importError, setImportError] = useState('')
   const [importing, setImporting] = useState(false)
@@ -85,22 +86,30 @@ export function SetFactions() {
   const createGameSession = useCallback(
     async ({ password }) => {
       setPasswordProtectionDialogOpen(false)
-      const session = await sessionService.createSession({
-        setupType: 'simple',
-        gameVersion,
-        factions: selectedFactions,
-        playerNames,
-        colors,
-        sessionDisplayName,
-        tidraftUrl: tidraftImportUrl,
-        password,
-      })
-      history.push(
-        generatePath(SESSION_VIEW_ROUTES.main, {
-          sessionId: session.id,
-        }),
-        { secret: session.secret },
-      )
+      setImportError('')
+      try {
+        const session = await sessionService.createSession({
+          setupType: 'simple',
+          gameVersion,
+          factions: selectedFactions,
+          playerNames,
+          colors,
+          sessionDisplayName,
+          tidraftUrl: tidraftImportUrl,
+          tidraftMapUrl,
+          password,
+        })
+        history.push(
+          generatePath(SESSION_VIEW_ROUTES.main, {
+            sessionId: session.id,
+          }),
+          { secret: session.secret },
+        )
+      } catch (error) {
+        setImportError(
+          error.message || 'Unable to create the session. Please try again.',
+        )
+      }
     },
     [
       history,
@@ -111,6 +120,7 @@ export function SetFactions() {
       colors,
       sessionDisplayName,
       tidraftImportUrl,
+      tidraftMapUrl,
     ],
   )
 
@@ -130,6 +140,7 @@ export function SetFactions() {
       setColors(imported.colors)
       setSessionDisplayName(getTidraftSessionName(url.toString()))
       setTidraftImportUrl(`${url.origin}${url.pathname}`)
+      setTidraftMapUrl(imported.tidraftMapUrl)
       setGameVersion(imported.gameVersion)
     } catch (error) {
       setImportError(error.message || 'Unable to import this TIDraft game.')
@@ -153,8 +164,8 @@ export function SetFactions() {
       <Box mb={4}>
         <Typography variant="h6">Import from TIDraft</Typography>
         <Typography variant="body2">
-          Imports factions, player names, colors, and table order. Slices are
-          not imported.
+          Imports factions, player names, colors, table order, and the galaxy
+          map. Slices are not imported.
         </Typography>
         <Grid container alignItems="center" spacing={2}>
           <Grid item sm={8} xs={12}>

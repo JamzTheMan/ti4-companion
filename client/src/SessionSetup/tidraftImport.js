@@ -178,6 +178,37 @@ export function getTidraftSessionName(value) {
     .join(' ')
 }
 
+function getTidraftMapUrl(imageUrl) {
+  if (imageUrl == null || imageUrl === '') {
+    return ''
+  }
+  if (typeof imageUrl !== 'string') {
+    throw new Error('TIDraft returned an invalid galaxy map link.')
+  }
+
+  let url
+  try {
+    url = new URL(imageUrl)
+  } catch {
+    throw new Error('TIDraft returned an invalid galaxy map link.')
+  }
+
+  if (
+    url.protocol !== 'https:' ||
+    url.port ||
+    url.username ||
+    url.password ||
+    !/^pub-[a-z0-9]+\.r2\.dev$/.test(url.hostname) ||
+    !/^\/drafts\/[a-z0-9]+(?:-[a-z0-9]+)*\.png$/.test(url.pathname) ||
+    url.search ||
+    url.hash
+  ) {
+    throw new Error('TIDraft returned an unsupported galaxy map link.')
+  }
+
+  return url.toString()
+}
+
 function decodeLoaderData(serialized) {
   let table
   try {
@@ -248,7 +279,8 @@ function decodeLoaderData(serialized) {
 
 export function parseTidraftImport(serialized) {
   const decoded = decodeLoaderData(serialized)
-  const draft = decoded?.['routes/draft.$id._index']?.data?.data
+  const routeData = decoded?.['routes/draft.$id._index']?.data
+  const draft = routeData?.data
   if (
     !draft ||
     !Array.isArray(draft.players) ||
@@ -362,5 +394,6 @@ export function parseTidraftImport(serialized) {
         .filter(({ color }) => color)
         .map(({ faction, color }) => [faction, color]),
     ),
+    tidraftMapUrl: getTidraftMapUrl(routeData.imageUrl),
   }
 }

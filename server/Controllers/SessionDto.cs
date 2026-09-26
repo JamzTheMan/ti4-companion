@@ -213,7 +213,7 @@ namespace Server.Controllers
 
             if (mapEvent == null)
             {
-                return string.Empty;
+                return this.Setup?.TidraftMapUrl ?? string.Empty;
             }
 
 #if DEBUG

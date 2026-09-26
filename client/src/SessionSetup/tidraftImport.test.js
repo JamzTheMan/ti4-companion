@@ -5,6 +5,31 @@ import {
 } from './tidraftImport'
 import { GameVersion } from '../GameComponents/GameVersionPicker'
 
+function serializeLoaderData(source) {
+  const table = []
+  const encode = (value) => {
+    const index = table.length
+    table.push(null)
+    if (Array.isArray(value)) {
+      table[index] = value.map(encode)
+    } else if (value && typeof value === 'object') {
+      table[index] = Object.fromEntries(
+        Object.entries(value).map(([key, child]) => [
+          `_${encode(key)}`,
+          encode(child),
+        ]),
+      )
+    } else {
+      table[index] = value
+    }
+
+    return index
+  }
+  encode(source)
+
+  return JSON.stringify(table)
+}
+
 describe('TIDraft import', () => {
   it('accepts only a TIDraft game URL', () => {
     expect(getTidraftSlug('https://tidraft.com/draft/example-game')).toBe(
@@ -47,32 +72,12 @@ describe('TIDraft import', () => {
             selections,
             settings: { factionGameSets: ['base', 'pok', 'te'] },
           },
+          imageUrl:
+            'https://pub-1234567890abcdef.r2.dev/drafts/example-game.png',
         },
       },
     }
-    const table = []
-    const encode = (value) => {
-      const index = table.length
-      table.push(null)
-      if (Array.isArray(value)) {
-        table[index] = value.map(encode)
-      } else if (value && typeof value === 'object') {
-        table[index] = Object.fromEntries(
-          Object.entries(value).map(([key, child]) => [
-            `_${encode(key)}`,
-            encode(child),
-          ]),
-        )
-      } else {
-        table[index] = value
-      }
-
-      return index
-    }
-    encode(source)
-
-    const serialized = JSON.stringify(table)
-    expect(parseTidraftImport(serialized)).toEqual({
+    expect(parseTidraftImport(serializeLoaderData(source))).toEqual({
       factions: [
         'The_Embers_of_Muaat',
         'The_Clan_of_Saar',
@@ -92,6 +97,33 @@ describe('TIDraft import', () => {
         The_Clan_of_Saar: 'green',
         The_Embers_of_Muaat: 'orange',
       },
+      tidraftMapUrl:
+        'https://pub-1234567890abcdef.r2.dev/drafts/example-game.png',
     })
+  })
+
+  it('rejects galaxy map links outside the TIDraft image host', () => {
+    const players = ['Jeff', 'George', 'Lee', 'Jon'].map((name, id) => ({
+      id,
+      name,
+    }))
+    const source = {
+      'routes/draft.$id._index': {
+        data: {
+          data: {
+            players,
+            selections: players.map(({ id }, index) => ({
+              type: 'SELECT_FACTION',
+              playerId: id,
+              factionId: ['arborec', 'barony', 'saar', 'muaat'][index],
+            })),
+          },
+          imageUrl: 'https://example.com/map.png',
+        },
+      },
+    }
+    expect(() => parseTidraftImport(serializeLoaderData(source))).toThrow(
+      'unsupported galaxy map link',
+    )
   })
 })
