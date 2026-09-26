@@ -53,7 +53,7 @@ const discordantStars = [
 const codex3 = [FACTION.The_Council_Keleres]
 const thundersEdge = [
   FACTION.Last_Bastion,
-  FACTION.The_Deepwrought_Scolarate,
+  FACTION.The_Deepwrought_Scholarate,
   FACTION.The_Crimson_Rebellion,
   FACTION.The_Ral_Nel_Consortium,
   FACTION.The_Firmament_The_Obsidian,
@@ -63,6 +63,7 @@ const base = Object.entries(FACTION)
     ([key]) =>
       !pok.includes(key) &&
       !codex3.includes(key) &&
+      !thundersEdge.includes(key) &&
       !discordantStars.includes(key),
   )
   .map(([, value]) => value)
@@ -82,6 +83,8 @@ export const useFactionsList = (versionOverride) => {
         return { factions: [...base, ...pok] }
       case GameVersion.DiscordantStars:
         return { factions: [...base, ...pok, ...codex3, ...discordantStars] }
+      case GameVersion.ThundersEdge:
+        return { factions: [...base, ...pok, ...codex3, ...thundersEdge] }
       case GameVersion.PoK_Codex3:
       default:
         return { factions: [...base, ...pok, ...codex3] }
