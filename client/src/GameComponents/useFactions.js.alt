@@ -1,0 +1,200 @@
+import { useMemo } from 'react'
+
+import { useGameVersion } from './useGameVersion'
+import { GameVersion } from './GameVersionPicker'
+import { FACTION, factionsData } from './gameInfo/factions'
+
+const factionSymbolFiles = {
+  [FACTION.The_Arborec]: 'arborec',
+  [FACTION.The_Barony_of_Letnev]: 'letnev',
+  [FACTION.The_Clan_of_Saar]: 'saar',
+  [FACTION.The_Embers_of_Muaat]: 'muaat',
+  [FACTION.The_Emirates_of_Hacan]: 'hacan',
+  [FACTION.The_Federation_of_Sol]: 'sol',
+  [FACTION.The_Ghosts_of_Creuss]: 'creuss',
+  [FACTION.The_L1Z1X_Mindnet]: 'l1z1x',
+  [FACTION.The_Mentak_Coalition]: 'mentak',
+  [FACTION.The_Naalu_Collective]: 'naalu',
+  [FACTION.The_Nekro_Virus]: 'nekro',
+  [FACTION.Sardakk_Norr]: 'norr',
+  [FACTION.The_Universities_of_Jol__Nar]: 'jolnar',
+  [FACTION.The_Winnu]: 'winnu',
+  [FACTION.The_Xxcha_Kingdom]: 'xxcha',
+  [FACTION.The_Yin_Brotherhood]: 'yin',
+  [FACTION.The_Yssaril_Tribes]: 'yssaril',
+  [FACTION.The_Argent_Flight]: 'argent',
+  [FACTION.The_Empyrean]: 'empyrean',
+  [FACTION.The_Mahact_Gene__Sorcerers]: 'mahact',
+  [FACTION.The_Naaz__Rokha_Alliance]: 'naazrokha',
+  [FACTION.The_Nomad]: 'nomad',
+  [FACTION.The_Titans_of_Ul]: 'ul',
+  [FACTION.The_VuilRaith_Cabal]: 'vuilraith',
+  [FACTION.The_Council_Keleres]: 'keleres',
+  [FACTION.The_Shipwrights_of_Axis]: 'axis',
+  [FACTION.The_Celdauri_Trade_Confederation]: 'celdauri',
+  [FACTION.The_Savages_of_Cymiae]: 'cymiae',
+  [FACTION.The_Dih_Mohn_Flotilla]: 'dihmohn',
+  [FACTION.The_Florzen_Profiteers]: 'florzen',
+  [FACTION.The_Free_Systems_Compact]: 'freesystems',
+  [FACTION.The_Ghemina_Raiders]: 'ghemina',
+  [FACTION.The_Augurs_of_Ilyxum]: 'ilyxum',
+  [FACTION.The_L_tokk_Khrask]: 'khrask',
+  [FACTION.The_Kollecc_Society]: 'kollecc',
+  [FACTION.The_Kortali_Tribunal]: 'kortali',
+  [FACTION.The_Li_Zho_Dynasty]: 'lizho',
+  [FACTION.The_Mirveda_Protectorate]: 'mirveda',
+  [FACTION.The_Glimmer_of_Mortheus]: 'mortheus',
+  [FACTION.The_Myko_Mentori]: 'myko',
+  [FACTION.The_Nivyn_Star_Kings]: 'nivyn',
+  [FACTION.The_Olradin_League]: 'olradin',
+  [FACTION.The_Zealots_of_Rhodun]: 'rhodun',
+  [FACTION.Roh_Dhna_Mechatronics]: 'rohdina',
+  [FACTION.The_Tnelis_Syndicate]: 'tnelis',
+  [FACTION.The_Vaden_Banking_Clans]: 'vaden',
+  [FACTION.The_Vaylerian_Scourge]: 'vaylerian',
+  [FACTION.The_Veldyr_Sovereignty]: 'veldyr',
+  [FACTION.The_Zelian_Purifier]: 'zelian',
+  [FACTION.The_Bentor_Conglomerate]: 'bentor',
+  [FACTION.The_Cheiran_Hordes]: 'cheiran',
+  [FACTION.The_Edyn_Mandate]: 'edyn',
+  [FACTION.The_Ghoti_Wayfarers]: 'ghoti',
+  [FACTION.The_Gledge_Union]: 'gledge',
+  [FACTION.The_Berserkers_of_Kjalengard]: 'kjalengard',
+  [FACTION.The_Monks_of_Kolume]: 'kolume',
+  [FACTION.The_Kyro_Sodality]: 'kyro',
+  [FACTION.The_Lanefir_Remnants]: 'lanefir',
+  [FACTION.The_Nokar_Sellships]: 'nokar',
+  [FACTION.Drahn_Consortium]: 'drahn',
+  [FACTION.Last_Bastion]: 'bastion',
+  [FACTION.The_Ral_Nel_Consortium]: 'ralnel',
+  [FACTION.The_Deepwrought_Scholarate]: 'dws',
+  [FACTION.The_Crimson_Rebellion]: 'crimson',
+  [FACTION.The_Firmament_The_Obsidian]: 'firmament',
+}
+
+const pok = [
+  FACTION.The_Argent_Flight,
+  FACTION.The_Empyrean,
+  FACTION.The_Mahact_Gene__Sorcerers,
+  FACTION.The_Naaz__Rokha_Alliance,
+  FACTION.The_Nomad,
+  FACTION.The_Titans_of_Ul,
+  FACTION.The_VuilRaith_Cabal,
+]
+const discordantStars = [
+  FACTION.The_Shipwrights_of_Axis,
+  FACTION.The_Celdauri_Trade_Confederation,
+  FACTION.The_Savages_of_Cymiae,
+  FACTION.The_Dih_Mohn_Flotilla,
+  FACTION.The_Florzen_Profiteers,
+  FACTION.The_Free_Systems_Compact,
+  FACTION.The_Ghemina_Raiders,
+  FACTION.The_Augurs_of_Ilyxum,
+  FACTION.The_L_tokk_Khrask,
+  FACTION.The_Kollecc_Society,
+  FACTION.The_Kortali_Tribunal,
+  FACTION.The_Li_Zho_Dynasty,
+  FACTION.The_Mirveda_Protectorate,
+  FACTION.The_Glimmer_of_Mortheus,
+  FACTION.The_Myko_Mentori,
+  FACTION.The_Nivyn_Star_Kings,
+  FACTION.The_Olradin_League,
+  FACTION.The_Zealots_of_Rhodun,
+  FACTION.Roh_Dhna_Mechatronics,
+  FACTION.The_Tnelis_Syndicate,
+  FACTION.The_Vaden_Banking_Clans,
+  FACTION.The_Vaylerian_Scourge,
+  FACTION.The_Veldyr_Sovereignty,
+  FACTION.The_Zelian_Purifier,
+  FACTION.The_Bentor_Conglomerate,
+  FACTION.The_Cheiran_Hordes,
+  FACTION.The_Edyn_Mandate,
+  FACTION.The_Ghoti_Wayfarers,
+  FACTION.The_Gledge_Union,
+  FACTION.The_Berserkers_of_Kjalengard,
+  FACTION.The_Monks_of_Kolume,
+  FACTION.The_Kyro_Sodality,
+  FACTION.The_Lanefir_Remnants,
+  FACTION.The_Nokar_Sellships,
+  FACTION.Drahn_Consortium,
+]
+const codex3 = [FACTION.The_Council_Keleres]
+const thundersEdge = [
+  FACTION.Last_Bastion,
+  FACTION.The_Deepwrought_Scholarate,
+  FACTION.The_Crimson_Rebellion,
+  FACTION.The_Ral_Nel_Consortium,
+  FACTION.The_Firmament_The_Obsidian,
+]
+const base = Object.entries(FACTION)
+  .filter(
+    ([key]) =>
+      !pok.includes(key) &&
+      !codex3.includes(key) &&
+      !thundersEdge.includes(key) &&
+      !discordantStars.includes(key),
+  )
+  .map(([, value]) => value)
+
+export const useFactionsList = (versionOverride) => {
+  const { gameVersion } = useGameVersion()
+
+  return useMemo(() => {
+    const switchedVersion =
+      versionOverride !== undefined ? versionOverride : gameVersion
+
+    switch (switchedVersion) {
+      case GameVersion.Base:
+        return { factions: base }
+      case GameVersion.PoK:
+      case GameVersion.PoK_Codex2:
+        return { factions: [...base, ...pok] }
+      case GameVersion.DiscordantStars:
+        return { factions: [...base, ...pok, ...codex3, ...discordantStars] }
+      case GameVersion.ThundersEdge:
+        return { factions: [...base, ...pok, ...codex3, ...thundersEdge] }
+      case GameVersion.PoK_Codex3:
+      default:
+        return { factions: [...base, ...pok, ...codex3] }
+    }
+  }, [gameVersion, versionOverride])
+}
+
+export const useFactionsData = (versionOverride) => {
+  const { gameVersion } = useGameVersion()
+  const versionToUse =
+    versionOverride === undefined ? gameVersion : versionOverride
+  const { factions: list } = useFactionsList(versionOverride)
+
+  return useMemo(
+    () => ({
+      factions: Object.entries(factionsData)
+        .filter(([key]) => list.includes(key))
+        .map(([, factionData]) => ({
+          ...factionData,
+          image: factionSymbolFiles[factionData.key]
+            ? `/factionsSymbols/ti_${factionSymbolFiles[factionData.key]}.webp`
+            : factionData.image,
+          cheatSheetPath:
+            versionToUse === GameVersion.ThundersEdge ||
+            (factionData.versionOverrides &&
+              factionData.versionOverrides.includes(versionToUse))
+              ? `/factionCheatsheets/${factionData.key.toLowerCase()}_${versionToUse}.webp`
+              : `/factionCheatsheets/${factionData.key.toLowerCase()}.webp`,
+        })),
+    }),
+    [list, versionToUse],
+  )
+}
+
+export const useFactionData = (factionKey) => {
+  const { factions } = useFactionsData()
+
+  return useMemo(() => {
+    if (factionKey) {
+      return factions.find((a) => a.key === factionKey) || {}
+    }
+
+    return { getData: (key) => factions.find((a) => a.key === key) || {} }
+  }, [factionKey, factions])
+}
