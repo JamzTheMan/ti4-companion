@@ -13,7 +13,7 @@ export function Footer() {
       </a>
       <br />
       <a
-        href="https://github.com/paxmagnifica/ti4-companion/blob/development/RELEASE_NOTES.md"
+        href="https://github.com/JamzTheMan/ti4-companion/blob/development/RELEASE_NOTES.md"
         rel="nofollow"
       >
         <Trans i18nKey="general.releaseNotes" />

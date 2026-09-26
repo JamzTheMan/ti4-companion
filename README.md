@@ -18,13 +18,23 @@ Every bit counts and keeps the creator even more motivated to keep going!
 
 [donate some trade goods](https://www.buymeacoffee.com/paxmagnifica)
 
-## Features
+## New Features
 
-see [our page](https://paxmagnifica.com)
+- Import a completed TIDraft game using its game URL. The import includes
+  factions, player names, player colors (mapped to this app's color palette),
+  table order, and the shared galaxy map image. Slices are not imported. 
+- Imported session names are generated from the TIDraft URL, and the source
+  draft is linked from the session overview and details.
+- Associate player names and colors with factions and edit them later in
+  session details.
+- Includes the Drahn Consortium and updated faction reference sheets
+- Converted all faction sheets to WebP images to reduce image sizes and imported updated Thunders Edge versions from TI4Draft.com
+
+For more information, see [Pax Magnifica](https://paxmagnifica.com).
 
 ## Plans
 
-see [issues](https://github.com/tarnas14/ti4-companion/issues)
+see [issues](https://github.com/JamzTheMan/ti4-companion/issues)
 
 ## Sessions assisted by the app
 

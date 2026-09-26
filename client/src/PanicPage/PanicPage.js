@@ -76,7 +76,7 @@ export class PanicPage extends React.Component {
           <p style={{ textAlign: 'center' }}>
             <Trans i18nKey="panicPage.or" />{' '}
             <a
-              href="https://github.com/paxmagnifica/ti4-companion/issues/new"
+              href="https://github.com/JamzTheMan/ti4-companion/issues/new"
               rel="nofollow"
               style={{ color: 'white' }}
             >
