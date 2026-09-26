@@ -395,7 +395,7 @@ export const factory = (options = { debug: true }) =>
               secondaryTitle: '(factions: {{factionList}})',
               cta: {
                 draft: 'Draft factions',
-                set: 'Record a session',
+                set: 'Create a session',
               },
               confirmDelete:
                 'Are you sure you want to delete "{{sessionName}}" session?',
