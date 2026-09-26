@@ -61,6 +61,7 @@ export const FACTION = {
   The_Kyro_Sodality: 'The_Kyro_Sodality',
   The_Lanefir_Remnants: 'The_Lanefir_Remnants',
   The_Nokar_Sellships: 'The_Nokar_Sellships',
+  Drahn_Consortium: 'Drahn_Consortium',
   // Thunder's Edge
   Last_Bastion: 'Last_Bastion',
   The_Ral_Nel_Consortium: 'The_Ral_Nel_Consortium',
@@ -449,6 +450,12 @@ export const factionsData = {
     key: 'The_Nokar_Sellships',
     image:
       'https://static.wikia.nocookie.net/twilight-imperium-4/images/c/cf/Nokar_icon.png',
+  },
+  Drahn_Consortium: {
+    link: 'https://twilight-imperium.fandom.com/',
+    key: 'Drahn_Consortium',
+    image:
+      'https://raw.githubusercontent.com/heisenbugged/ti4-lab/main/public/factions/ti_drahn.png',
   },
   // Thunder's edge
   Last_Bastion: {
