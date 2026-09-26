@@ -71,6 +71,12 @@ function DetailsForm({ disabled, session }) {
       {},
     ) || {},
   )
+  const [playerNames, setPlayerNames] = useState(
+    session.players.reduce(
+      (acc, next) => ({ ...acc, [next.faction]: next.playerName || '' }),
+      {},
+    ),
+  )
   const getChangeHandler = useCallback(
     (setter, propertyName = 'value') =>
       (changeEvent) => {
@@ -97,6 +103,7 @@ function DetailsForm({ disabled, session }) {
           ([, color]) => typeof color === 'string' && color.length > 0,
         ),
       ),
+      playerNames,
       mapPositions,
     }
 
@@ -110,6 +117,7 @@ function DetailsForm({ disabled, session }) {
   }, [
     mapPositions,
     colors,
+    playerNames,
     vpCount,
     session,
     sessionDisplayName,
@@ -252,28 +260,34 @@ function DetailsForm({ disabled, session }) {
                   colors={colors}
                   disabled={disabled}
                   onChange={setColors}
+                  onPlayerNamesChange={setPlayerNames}
+                  playerNames={playerNames}
                   players={session.players}
                 />
               )}
-              {!session.isDraft && session.setup.setupType !== 'simple' && (
-                <>
-                  <Grid item xs={12}>
-                    <Typography>
-                      <Trans i18nKey="sessionDetails.mapPositions" />
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    style={{ display: 'flex', gridColumnGap: '1em' }}
-                    xs={12}
-                  >
-                    <MapPositions
-                      onChange={(newPositions) => setMapPositions(newPositions)}
-                      value={mapPositions}
-                    />
-                  </Grid>
-                </>
-              )}
+              {!session.isDraft &&
+                (session.setup.setupType !== 'simple' ||
+                  session.players.some(({ atTable }) => atTable >= 0)) && (
+                  <>
+                    <Grid item xs={12}>
+                      <Typography>
+                        <Trans i18nKey="sessionDetails.mapPositions" />
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      style={{ display: 'flex', gridColumnGap: '1em' }}
+                      xs={12}
+                    >
+                      <MapPositions
+                        onChange={(newPositions) =>
+                          setMapPositions(newPositions)
+                        }
+                        value={mapPositions}
+                      />
+                    </Grid>
+                  </>
+                )}
               <Grid container item justifyContent="flex-end" xs={12}>
                 {!disabled && (
                   <Button

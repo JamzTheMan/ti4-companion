@@ -50,7 +50,8 @@ function FactionNutshells({
 
     const player = (
       <span>
-        {playerName || factionName}
+        {factionName}
+        {playerName && <em> ({playerName})</em>}
         {speaker && (
           <em>
             {' '}

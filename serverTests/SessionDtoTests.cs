@@ -281,5 +281,44 @@ namespace ServerTests
             // then
             sessionDto.Finished.Should().BeTrue();
         }
+
+        [Test]
+        public void ShouldLoadImportedPlayerDetailsAndApplyMetadataOverrides()
+        {
+            var events = new List<GameEvent>()
+            {
+                new GameEvent
+                {
+                    Id = Guid.NewGuid(),
+                    EventType = nameof(GameStarted),
+                    SerializedPayload = JsonConvert.SerializeObject(new GameStartedPayload
+                    {
+                        SetupType = "simple",
+                        Factions = new List<string> { "The_Arborec" },
+                        PlayerNames = new Dictionary<string, string> { { "The_Arborec", "Jeff" } },
+                        Colors = new Dictionary<string, string> { { "The_Arborec", "blue" } },
+                    }),
+                },
+                new GameEvent
+                {
+                    Id = Guid.NewGuid(),
+                    EventType = nameof(MetadataUpdated),
+                    SerializedPayload = JsonConvert.SerializeObject(new MetadataUpdatedPayload
+                    {
+                        PlayerNames = new Dictionary<string, string> { { "The_Arborec", "Jeffrey" } },
+                    }),
+                },
+            };
+
+            var sessionDto = new SessionDto(new Session { Events = events });
+
+            sessionDto.Players.Should().ContainSingle().Which.Should().BeEquivalentTo(
+                new PlayerDto
+                {
+                    Faction = "The_Arborec",
+                    PlayerName = "Jeffrey",
+                    Color = "blue",
+                });
+        }
     }
 }

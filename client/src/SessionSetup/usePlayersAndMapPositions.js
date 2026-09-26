@@ -1,7 +1,7 @@
 import { useMemo, useState, useCallback } from 'react'
 import { colors as plasticColors } from '../shared/plasticColors'
 
-const MAP_POSITIONS = [
+export const DEFAULT_MAP_POSITIONS = [
   { name: 'black', color: plasticColors.black },
   { name: 'yellow', color: plasticColors.yellow },
   { name: 'purple', color: plasticColors.purple },
@@ -14,7 +14,7 @@ const MAP_POSITIONS = [
 
 export function usePlayersAndMapPositions(initialPlayerCount = 6) {
   const [mapPositions, setMapPositions] = useState(
-    MAP_POSITIONS.slice(0, initialPlayerCount),
+    DEFAULT_MAP_POSITIONS.slice(0, initialPlayerCount),
   )
   const [players, setPlayers] = useState(
     [...Array(initialPlayerCount).keys()].map(
@@ -43,7 +43,7 @@ export function usePlayersAndMapPositions(initialPlayerCount = 6) {
                 return mapPositions[playerIndex]
               }
 
-              const defaultMapPosition = MAP_POSITIONS[playerIndex]
+              const defaultMapPosition = DEFAULT_MAP_POSITIONS[playerIndex]
               const colorTaken = mapPositions.some(
                 (mp) => mp.color === defaultMapPosition.color,
               )

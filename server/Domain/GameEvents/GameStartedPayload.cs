@@ -9,6 +9,8 @@ namespace Server.Domain
             this.Factions = new List<string>();
             this.GameVersion = GameVersion.PoK_Codex3;
             this.RandomPlayerOrder = new int[0];
+            this.PlayerNames = new Dictionary<string, string>();
+            this.Colors = new Dictionary<string, string>();
         }
 
         public GameStartedPayload(GameStartedPayload payload)
@@ -19,6 +21,8 @@ namespace Server.Domain
             this.Options = new DraftOptions(payload.Options);
             this.Password = payload.Password;
             this.RandomPlayerOrder = (int[])payload.RandomPlayerOrder.Clone();
+            this.PlayerNames = new Dictionary<string, string>(payload.PlayerNames ?? new Dictionary<string, string>());
+            this.Colors = new Dictionary<string, string>(payload.Colors ?? new Dictionary<string, string>());
         }
 
         public string SetupType { get; set; }
@@ -32,5 +36,9 @@ namespace Server.Domain
         public string Password { get; set; }
 
         public int[] RandomPlayerOrder { get; set; }
+
+        public Dictionary<string, string> PlayerNames { get; set; }
+
+        public Dictionary<string, string> Colors { get; set; }
     }
 }

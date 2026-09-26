@@ -96,6 +96,45 @@ namespace ServerTests
         }
 
         [Test]
+        public void ShouldIncludeSavedPlayerNames()
+        {
+            var session = new SessionDto()
+            {
+                Factions = new List<string>() { "F1", "F2" },
+                PlayerNames = new Dictionary<string, string>() { { "F1", "P1" } },
+            };
+
+            var actual = PlayerDto.GetPlayers(session);
+
+            actual.Should().BeEquivalentTo(new[]
+            {
+                new PlayerDto { Faction = "F1", PlayerName = "P1" },
+                new PlayerDto { Faction = "F2" },
+            });
+        }
+
+        [Test]
+        public void ShouldMatchImportedDetailsWhenFactionDictionaryKeysAreCamelCased()
+        {
+            var session = new SessionDto()
+            {
+                Factions = new List<string>() { "The_Arborec" },
+                PlayerNames = new Dictionary<string, string>() { { "the_Arborec", "P1" } },
+                Colors = new Dictionary<string, string>() { { "the_Arborec", "blue" } },
+            };
+
+            var actual = PlayerDto.GetPlayers(session);
+
+            actual.Should().ContainSingle().Which.Should().BeEquivalentTo(
+                new PlayerDto
+                {
+                    Faction = "The_Arborec",
+                    PlayerName = "P1",
+                    Color = "blue",
+                });
+        }
+
+        [Test]
         public void ShouldIncludeColorsEvenOnFactionKeyBeingLowercased()
         {
             // given

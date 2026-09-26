@@ -139,7 +139,10 @@ export function Session({
               classes={classes}
               players={session.players}
               sessionId={session.id}
-              showTablePosition={Boolean(session.setup.options?.tablePick)}
+              showTablePosition={Boolean(
+                session.setup.options?.tablePick ||
+                  session.players.some(({ atTable }) => atTable >= 0),
+              )}
               wasDrafted={session.setup.setupType === 'draft'}
             />
           </Grid>

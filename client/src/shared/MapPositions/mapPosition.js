@@ -1,17 +1,23 @@
 export function getMapPositionName({ mapPositions, position, suffix }) {
+  const positionIndex = Number(position)
+  if (!Number.isInteger(positionIndex) || positionIndex < 0) {
+    return ''
+  }
+
   const defaultNameSuffix = suffix ? ` ${suffix ?? 'on map'}` : ''
 
-  const positionName = mapPositions?.length
-    ? mapPositions[Number(position)].name
-    : `P${Number(position) + 1}${defaultNameSuffix}`
+  const positionName =
+    mapPositions?.[positionIndex]?.name ??
+    `P${positionIndex + 1}${defaultNameSuffix}`
 
   return positionName
 }
 
 export function getMapPositionColor({ mapPositions, position }) {
-  const color = mapPositions?.length
-    ? mapPositions[Number(position)].color ?? null
-    : null
+  const positionIndex = Number(position)
+  if (!Number.isInteger(positionIndex) || positionIndex < 0) {
+    return null
+  }
 
-  return color
+  return mapPositions?.[positionIndex]?.color ?? null
 }

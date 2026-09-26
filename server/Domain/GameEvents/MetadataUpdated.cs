@@ -68,6 +68,8 @@ namespace Server.Domain
                 Colors = (payload.Colors ?? new Dictionary<string, string>())
                     .Where(color => !string.IsNullOrEmpty(color.Value))
                     .ToDictionary(color => color.Key, color => color.Value),
+                PlayerNames = (payload.PlayerNames ?? new Dictionary<string, string>())
+                    .ToDictionary(player => player.Key, player => player.Value?.Trim() ?? string.Empty),
                 MapPositions = payload.MapPositions ?? new List<MapPosition>(),
             };
         }

@@ -36,6 +36,10 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+            services.AddHttpClient("Tidraft", client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(15);
+            });
 
             services.AddCors(options =>
             {

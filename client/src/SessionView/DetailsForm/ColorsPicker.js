@@ -4,7 +4,14 @@ import { useTranslation, Trans } from '../../i18n'
 import { ColorPicker } from '../../shared/ColorPicker'
 import PlayerFlag from '../PlayerFlag'
 
-export function ColorsPicker({ colors, players, onChange, disabled }) {
+export function ColorsPicker({
+  colors,
+  players,
+  onChange,
+  playerNames,
+  onPlayerNamesChange,
+  disabled,
+}) {
   const { t } = useTranslation()
 
   return (
@@ -32,9 +39,15 @@ export function ColorsPicker({ colors, players, onChange, disabled }) {
           />
           <TextField
             color="secondary"
-            disabled
-            label={playerName}
-            value={t(`factions.${factionKey}.name`)}
+            disabled={disabled}
+            label={t(`factions.${factionKey}.name`)}
+            onChange={(event) =>
+              onPlayerNamesChange((oldNames) => ({
+                ...oldNames,
+                [factionKey]: event.currentTarget.value,
+              }))
+            }
+            value={playerNames[factionKey] ?? playerName ?? ''}
             variant="filled"
           />
           <ColorPicker

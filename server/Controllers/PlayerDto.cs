@@ -1,4 +1,5 @@
 using Server.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,16 +33,24 @@ namespace Server.Controllers
             {
                 var decapitalizedFaction = faction;
                 decapitalizedFaction = char.ToLower(decapitalizedFaction[0]) + decapitalizedFaction.Substring(1);
-                var playerName = factionPicks.FirstOrDefault(fp => fp.Pick == faction)?.PlayerName;
+                var hasPlayerName = TryGetValueIgnoreCase(session.PlayerNames, faction, out var savedPlayerName);
+                var playerName = hasPlayerName
+                    ? savedPlayerName
+                    : factionPicks.FirstOrDefault(fp => fp.Pick == faction)?.PlayerName;
                 var tablePick = tablePicks.FirstOrDefault(tp => tp.PlayerName == playerName)?.Pick;
+                var atTable = int.TryParse(tablePick, out var pickedPosition)
+                    ? pickedPosition
+                    : -1;
+                var hasColor = TryGetValueIgnoreCase(session.Colors, faction, out var savedColor)
+                    || TryGetValueIgnoreCase(session.Colors, decapitalizedFaction, out savedColor);
 
                 return new PlayerDto
                 {
                     Faction = faction,
                     PlayerName = playerName,
-                    Color = session.Colors?.GetValueOrDefault(faction) ?? session.Colors?.GetValueOrDefault(decapitalizedFaction),
+                    Color = hasColor ? savedColor : null,
                     Speaker = playerName != null && session.Draft?.Speaker == playerName,
-                    AtTable = int.Parse(tablePick ?? "-1"),
+                    AtTable = atTable,
                 };
             });
 
@@ -59,6 +68,27 @@ namespace Server.Controllers
             }
 
             return picks;
+        }
+
+        private static bool TryGetValueIgnoreCase<T>(
+            IDictionary<string, T> values,
+            string key,
+            out T value)
+        {
+            if (values != null)
+            {
+                foreach (var entry in values)
+                {
+                    if (string.Equals(entry.Key, key, StringComparison.OrdinalIgnoreCase))
+                    {
+                        value = entry.Value;
+                        return true;
+                    }
+                }
+            }
+
+            value = default(T);
+            return false;
         }
     }
 }

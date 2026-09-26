@@ -28,7 +28,12 @@ namespace Server.Controllers
             this.Editable = !session.Locked;
             this.SetSessionDetails(session.Events);
             this.Draft = new DraftDto(session);
-            this.Players = this.IsKatowiceDraft ? Domain.Katowice.Draft.GeneratePlayerDto(session) : PlayerDto.GetPlayers(this);
+            this.PlayerNames = this.GetPlayerNames(session.Events);
+            this.Colors = this.GetColors(session.Events);
+            this.Players = this.ApplyPlayerMetadata(
+                this.IsKatowiceDraft
+                    ? Domain.Katowice.Draft.GeneratePlayerDto(session)
+                    : PlayerDto.GetPlayers(this));
             this.Secured = !string.IsNullOrEmpty(session.HashedPassword);
             this.MapPositions = this.GetMapPositions(session.Events);
 
@@ -82,6 +87,8 @@ namespace Server.Controllers
 
         public Dictionary<string, string> Colors { get; set; }
 
+        public Dictionary<string, string> PlayerNames { get; set; }
+
         public IEnumerable<PlayerDto> Players { get; internal set; }
 
         public string Map { get; internal set; }
@@ -103,6 +110,57 @@ namespace Server.Controllers
             var mapPositionsFromUpdatedMetadata = this.GetLatestMetadataEventPayload(events)?.MapPositions;
 
             return mapPositionsFromUpdatedMetadata ?? initialMapPositions;
+        }
+
+        private Dictionary<string, string> GetPlayerNames(List<GameEvent> events)
+        {
+            var names = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            this.CopyValues(names, this.Setup?.PlayerNames);
+            var metadataNames = this.GetLatestMetadataEventPayload(events)?.PlayerNames;
+            this.CopyValues(names, metadataNames);
+
+            return names;
+        }
+
+        private Dictionary<string, string> GetColors(List<GameEvent> events)
+        {
+            var colors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            this.CopyValues(colors, this.Setup?.Colors);
+            var metadataColors = this.GetLatestMetadataEventPayload(events)?.Colors;
+            this.CopyValues(colors, metadataColors);
+
+            return colors;
+        }
+
+        private void CopyValues<T>(Dictionary<string, T> target, Dictionary<string, T> source)
+        {
+            foreach (var value in source ?? new Dictionary<string, T>())
+            {
+                target[value.Key] = value.Value;
+            }
+        }
+
+        private IEnumerable<PlayerDto> ApplyPlayerMetadata(IEnumerable<PlayerDto> players)
+        {
+            return players.Select(player =>
+            {
+                if (string.IsNullOrEmpty(player.Faction))
+                {
+                    return player;
+                }
+
+                if (this.PlayerNames.TryGetValue(player.Faction, out var playerName))
+                {
+                    player.PlayerName = playerName;
+                }
+
+                if (this.Colors.TryGetValue(player.Faction, out var color))
+                {
+                    player.Color = color;
+                }
+
+                return player;
+            });
         }
 
         private GameStartedPayload GetSetup(List<GameEvent> events)

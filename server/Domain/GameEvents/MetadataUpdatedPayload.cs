@@ -8,6 +8,7 @@ namespace Server.Domain
         public MetadataUpdatedPayload()
         {
             this.Colors = new Dictionary<string, string>();
+            this.PlayerNames = new Dictionary<string, string>();
         }
 
         public string SessionDisplayName { get; set; }
@@ -26,6 +27,8 @@ namespace Server.Domain
 
         public Dictionary<string, string> Colors { get; set; }
 
+        public Dictionary<string, string> PlayerNames { get; set; }
+
         public List<MapPosition> MapPositions { get; set; }
 
         public override bool Equals(object obj)
@@ -38,7 +41,8 @@ namespace Server.Domain
                    this.SessionEnd == payload.SessionEnd &&
                    this.Duration == payload.Duration &&
                    this.VpCount == payload.VpCount &&
-                   EqualityComparer<Dictionary<string, string>>.Default.Equals(this.Colors, payload.Colors);
+                   EqualityComparer<Dictionary<string, string>>.Default.Equals(this.Colors, payload.Colors) &&
+                   EqualityComparer<Dictionary<string, string>>.Default.Equals(this.PlayerNames, payload.PlayerNames);
         }
 
         public override int GetHashCode()
