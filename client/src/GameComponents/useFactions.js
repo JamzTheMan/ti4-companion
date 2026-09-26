@@ -48,6 +48,7 @@ const discordantStars = [
   FACTION.The_Kyro_Sodality,
   FACTION.The_Lanefir_Remnants,
   FACTION.The_Nokar_Sellships,
+  FACTION.Drahn_Consortium,
 ]
 const codex3 = [FACTION.The_Council_Keleres]
 const thundersEdge = [
@@ -101,8 +102,9 @@ export const useFactionsData = (versionOverride) => {
         .map(([, factionData]) => ({
           ...factionData,
           cheatSheetPath:
-            factionData.versionOverrides &&
-            factionData.versionOverrides.includes(versionToUse)
+            versionToUse === GameVersion.ThundersEdge ||
+            (factionData.versionOverrides &&
+              factionData.versionOverrides.includes(versionToUse))
               ? `/factionCheatsheets/${factionData.key.toLowerCase()}_${versionToUse}.webp`
               : `/factionCheatsheets/${factionData.key.toLowerCase()}.webp`,
         })),
