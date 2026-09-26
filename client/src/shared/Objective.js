@@ -48,9 +48,10 @@ const useStyles = makeStyles({
   },
   points: {
     position: 'absolute',
-    top: '74%',
+    top: '75%',
     height: '13%',
-    fontSize: '1.5em',
+    fontSize: '1.6em',
+    fontWeight: 'bold',
   },
   rewards: {
     position: 'absolute',
@@ -68,9 +69,9 @@ const useStyles = makeStyles({
 })
 
 const SMALL_SIZE = {
-  width: 100,
-  height: 150,
-  fontSize: '.6em',
+  width: 200,
+  height: 300,
+  fontSize: '1.2em',
 }
 
 const NORMAL_SIZE = {

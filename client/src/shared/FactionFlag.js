@@ -9,11 +9,11 @@ import { FactionImage } from './FactionImage'
 
 const useFlagStyles = makeStyles({
   root: {
-    width: ({ width }) => `calc(${width} - 2px)`,
-    height: ({ height }) => `calc(${height} - 2px)`,
+    width: ({ width }) => `calc(${width} + 2px)`,
+    height: ({ height }) => `calc(${height} + 2px)`,
     backgroundColor: ({ selected }) =>
-      `rgba(255, 255, 255, ${selected ? '0.9' : '0.3'})`,
-    borderRadius: '7%',
+      `${selected ? 'rgba(255, 255, 255, 1)' : 'rgba(100, 0, 0, 0.5)'}`,
+    borderRadius: '10%',
     cursor: ({ disabled }) => (disabled ? 'default' : 'pointer'),
     display: 'flex',
     justifyContent: 'center',
@@ -22,7 +22,7 @@ const useFlagStyles = makeStyles({
     margin: '1px 1px',
   },
   factionImage: {
-    opacity: ({ selected }) => (selected ? 1 : 0.6),
+    opacity: ({ selected }) => (selected ? 1 : 0.9),
     height: '100%',
     width: 'auto',
     backgroundSize: 'contain',

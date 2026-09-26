@@ -384,6 +384,13 @@ export const factory = (options = { debug: true }) =>
                 add: 'add objective',
                 new: 'new objective',
               },
+              confirmation: {
+                title: 'Confirm Objective Change',
+                scorePrefix: 'Score',
+                unscorePrefix: 'Remove',
+                for: 'for',
+                unknownPlayer: 'player name not set',
+              },
             },
             sessionList: {
               title: 'Your remembered sessions',
@@ -464,15 +471,6 @@ export const factory = (options = { debug: true }) =>
               tooltip: 'Remove Public Objective',
               content:
                 'There are already points scored, are you sure you want to delete a Public Objective?',
-            },
-            publicObjectives: {
-              confirmation: {
-                title: 'Confirm Objective Change',
-                scorePrefix: 'Score',
-                unscorePrefix: 'Remove',
-                for: 'for',
-                unknownPlayer: 'player name not set',
-              },
             },
             panicPage: {
               message:
@@ -585,6 +583,13 @@ export const factory = (options = { debug: true }) =>
                 add: 'dodaj cel',
                 new: 'nowy cel',
               },
+              confirmation: {
+                title: 'Potwierdź zmianę celu',
+                scorePrefix: 'Przyznać punkt za',
+                unscorePrefix: 'Cofnąć punkt za',
+                for: 'frakcji',
+                unknownPlayer: 'nie podano imienia gracza',
+              },
             },
             sessionList: {
               title: 'Twoje zapamiętane sesje',
@@ -632,15 +637,6 @@ export const factory = (options = { debug: true }) =>
               tooltip: 'Usuń cel publiczny',
               content:
                 'Ten cel publiczny został spełniony przez gracza. Czy na pewno chcesz go usunąć?',
-            },
-            publicObjectives: {
-              confirmation: {
-                title: 'Potwierdź zmianę celu',
-                scorePrefix: 'Przyznać punkt za',
-                unscorePrefix: 'Cofnąć punkt za',
-                for: 'frakcji',
-                unknownPlayer: 'nie podano imienia gracza',
-              },
             },
           },
         },

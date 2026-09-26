@@ -18,16 +18,29 @@ function FactionSelector({ disabled, factions, value, onChange, size }) {
   )
 
   return (
-    <Grid container direction="column">
+    <Grid
+      container
+      direction={size === 'small' ? 'row' : 'column'}
+      style={
+        size === 'small'
+          ? {
+              display: 'grid',
+              flexShrink: 0,
+              gridTemplateColumns: 'repeat(2, 2.8em)',
+              width: '5.6em',
+            }
+          : undefined
+      }
+    >
       {factions.map((factionKey) => (
         <PlayerFlag
           key={factionKey}
           disabled={disabled}
           factionKey={factionKey}
-          height={{ small: '1.3em', fullscreen: '3.3vh' }[size] || '2em'}
+          height={{ small: '2.6em', fullscreen: '3.3vh' }[size] || '2em'}
           onClick={() => clicked(factionKey, !value.includes(factionKey))}
           selected={value.includes(factionKey)}
-          width="auto"
+          width={size === 'small' ? '2.6em' : 'auto'}
         />
       ))}
     </Grid>

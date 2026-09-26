@@ -17,6 +17,8 @@ const useStyles = makeStyles({
   objectiveContainer: {
     position: 'relative',
     padding: 0,
+    boxSizing: 'border-box',
+    flexBasis: ({ small }) => (small ? '100%' : 'auto'),
     margin: ({ small, fullscreen }) => {
       if (small) {
         return 6
@@ -30,6 +32,7 @@ const useStyles = makeStyles({
     },
     display: 'flex',
     alignItems: 'flex-start',
+    justifyContent: ({ small }) => (small ? 'center' : undefined),
   },
 })
 
@@ -57,9 +60,9 @@ function PublicObjectives({ editable, session }) {
 
   const objectiveScored = useCallback(
     ({ change, objective }) => {
-      const factionPoints = session.points.find(
-        ({ faction }) => faction === change.factionKey,
-      )?.points ?? 0
+      const factionPoints =
+        session.points.find(({ faction }) => faction === change.factionKey)
+          ?.points ?? 0
       const objectivePoints = availableObjectives[objective.slug].points
 
       if (change.event === 'selected') {
@@ -165,15 +168,15 @@ function PublicObjectives({ editable, session }) {
             <strong>
               {t(`objectives.${pendingScore.objective.slug}.name`)}
             </strong>{' '}
-            {t('publicObjectives.confirmation.for')} <strong>
+            {t('publicObjectives.confirmation.for')}{' '}
+            <strong>
               {t(`factions.${pendingScore.change.factionKey}.name`)}
             </strong>{' '}
             (
             <strong>
               {session.players.find(
                 ({ faction }) => faction === pendingScore.change.factionKey,
-              )?.playerName ||
-                t('publicObjectives.confirmation.unknownPlayer')}
+              )?.playerName || t('publicObjectives.confirmation.unknownPlayer')}
             </strong>
             )?
           </Typography>
