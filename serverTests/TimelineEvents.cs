@@ -160,5 +160,26 @@ namespace ServerTests
             // then
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Test]
+        public void ShouldReturnMapBlobUsingConfiguredPublicUrl()
+        {
+            var session = new Session
+            {
+                Events = new List<GameEvent>
+                {
+                    new GameEvent
+                    {
+                        EventType = GameEvent.MapAdded,
+                        SerializedPayload = "http://storage:10000/ti4blob/session/map",
+                    },
+                },
+            };
+
+            var timeline = new Timeline(session, "https://ti4.nerps.net/storage");
+
+            timeline.GetEvents().Should().ContainSingle()
+                .Which.SerializedPayload.Should().Be("https://ti4.nerps.net/storage/ti4blob/session/map");
+        }
     }
 }

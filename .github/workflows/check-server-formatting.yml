@@ -8,15 +8,15 @@ on: [pull_request]
 jobs:
   server_code_check:
     name: Check server code formatting and build
-    runs-on: ubuntu-latest
+    runs-on: "Ubuntu 26"
     strategy:
       matrix:
         dotnet-version: ['6.0.x']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup dotnet ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Display dotnet version
@@ -29,15 +29,15 @@ jobs:
         run: dotnet build ./server
   tests:
     name: Check tests code formatting, build and run test
-    runs-on: ubuntu-latest
+    runs-on: "Ubuntu 26"
     strategy:
       matrix:
         dotnet-version: ['6.0.x']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup dotnet ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Display dotnet version

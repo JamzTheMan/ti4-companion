@@ -324,5 +324,36 @@ namespace ServerTests
             sessionDto.DisplayName.Should().Be("Corner Rebellion Speed");
             sessionDto.TidraftUrl.Should().Be("https://tidraft.com/draft/corner-rebellion-speed");
         }
+
+        [Test]
+        public void ShouldReturnMapBlobUsingConfiguredPublicUrl()
+        {
+            var session = new Session
+            {
+                Events = new List<GameEvent>
+                {
+                    new GameEvent
+                    {
+                        Id = Guid.NewGuid(),
+                        EventType = nameof(GameStarted),
+                        SerializedPayload = JsonConvert.SerializeObject(new GameStartedPayload
+                        {
+                            SetupType = "simple",
+                            Factions = new List<string> { "The_Arborec" },
+                        }),
+                    },
+                    new GameEvent
+                    {
+                        Id = Guid.NewGuid(),
+                        EventType = GameEvent.MapAdded,
+                        SerializedPayload = "http://storage:10000/ti4blob/session/map",
+                    },
+                },
+            };
+
+            var sessionDto = new SessionDto(session, "https://ti4.nerps.net/storage");
+
+            sessionDto.Map.Should().Be("https://ti4.nerps.net/storage/ti4blob/session/map");
+        }
     }
 }

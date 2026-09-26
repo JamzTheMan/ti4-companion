@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Server.Infra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Server.Domain
         private bool addSessionSummary = false;
         private bool deduplicate = false;
         private bool addDeltas = false;
+        private readonly string publicBlobBaseUrl;
 
-        public Timeline(Session session)
+        public Timeline(Session session, string publicBlobBaseUrl = null)
         {
             this.originalOrderedEvents = session.Events.OrderBy(e => e.HappenedAt);
             this.orderedEvents = session.Events.OrderBy(e => e.HappenedAt);
+            this.publicBlobBaseUrl = publicBlobBaseUrl;
         }
 
         public Timeline AddDraftSummary()
@@ -111,18 +114,16 @@ namespace Server.Domain
                     continue;
                 }
 
-#if DEBUG
                 if (sessionEvent.EventType == GameEvent.TimelineUserEvent || sessionEvent.EventType == GameEvent.MapAdded)
                 {
                     timelineEvents.Add(KeyValuePair.Create(sessionEvent, new TimelineEvent
                     {
                         EventType = sessionEvent.EventType,
-                        SerializedPayload = sessionEvent.SerializedPayload.Replace("storage-emulator", "localhost"),
+                        SerializedPayload = BlobUrlMapper.MapToPublic(sessionEvent.SerializedPayload, this.publicBlobBaseUrl),
                         HappenedAt = sessionEvent.HappenedAt,
                     }));
                     continue;
                 }
-#endif
 
                 timelineEvents.Add(KeyValuePair.Create(sessionEvent, new TimelineEvent
                 {

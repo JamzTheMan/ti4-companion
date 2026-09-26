@@ -1,4 +1,5 @@
 using Server.Domain;
+using Server.Infra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Server.Controllers
         {
         }
 
-        public SessionDto(Session session)
+        public SessionDto(Session session, string publicBlobBaseUrl = null)
         {
             this.Id = session.Id;
             this.Checksum = session.Events.OrderBy(e => e.HappenedAt).Last().Id;
@@ -21,7 +22,7 @@ namespace Server.Controllers
             this.Factions = this.GetFactions(session.Events);
             this.Points = this.GetPoints(session.Events);
             this.Objectives = this.GetObjectives(session.Events);
-            this.Map = this.GetMap(session.Events);
+            this.Map = this.GetMap(session.Events, publicBlobBaseUrl);
             this.MapLink = this.GetMapLink(session.Events);
             this.CreatedAt = session.CreatedAt;
             this.Locked = session.Locked;
@@ -207,7 +208,7 @@ namespace Server.Controllers
             return MetadataUpdated.GetPayload(latestMetadataEvent);
         }
 
-        private string GetMap(List<GameEvent> events)
+        private string GetMap(List<GameEvent> events, string publicBlobBaseUrl)
         {
             var mapEvent = (events ?? new List<GameEvent>()).OrderByDescending(e => e.HappenedAt).FirstOrDefault(e => e.EventType == GameEvent.MapAdded);
 
@@ -216,11 +217,7 @@ namespace Server.Controllers
                 return this.Setup?.TidraftMapUrl ?? string.Empty;
             }
 
-#if DEBUG
-            return mapEvent.SerializedPayload.Replace("storage-emulator", "localhost");
-#endif
-
-            return mapEvent.SerializedPayload;
+            return BlobUrlMapper.MapToPublic(mapEvent.SerializedPayload, publicBlobBaseUrl);
         }
 
         private string GetMapLink(List<GameEvent> events)

@@ -81,7 +81,7 @@ namespace Server.Controllers
                 this.sessionContext.Entry(fromDb).Collection(s => s.Events)
                 .Load();
 
-                return new SessionDto(fromDb);
+                return new SessionDto(fromDb, this.configuration["PublicBlobBaseUrl"]);
             }));
         }
 
