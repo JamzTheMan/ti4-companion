@@ -1,0 +1,113 @@
+html:-webkit-full-screen-ancestor {
+  background-color: inherit;
+}
+
+html:-moz-full-screen-ancestor {
+  background-color: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+/* mui override */
+
+body, *:fullscreen {
+  background-color: transparent !important;
+  background-image: url('./assets/background-1.png');
+  position: relative;
+  z-index: 0;
+}
+
+*:fullscreen {
+    overflow-y: hidden;
+}
+
+#root {
+  position: relative;
+  padding-bottom: 2em;
+  min-height: 100vh;
+}
+
+*:fullscreen #root {
+  padding-bottom: 0 !important;
+  min-height: 0 !important;
+}
+
+#root > footer {
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	display: block;
+	width: 100%;
+	font-size: .95em;
+	opacity: .9;
+	padding-bottom: .2em;
+}
+
+#root > footer > a {
+	text-decoration: none;
+	font-style: italic;
+	color: white;
+}
+
+#root > footer > a:hover {
+	font-style: normal;
+}
+
+.MuiAppBar-root {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* same as useSmallViewport */
+@media (max-width:649px) {
+	#root > footer {
+		width: 44vw;
+		margin-left: 27vw;
+		font-size: .7em;
+	}
+}
+
+/* GitHub Ribbon*/
+.github-corner {
+  opacity: 0.8;
+}
+
+.github-corner:hover .octo-arm {
+	animation: octocat-wave 560ms ease-in-out
+}
+
+@keyframes octocat-wave {
+	0%,
+	100% {
+		transform: rotate(0)
+	}
+	20%,
+	60% {
+		transform: rotate(-25deg)
+	}
+	40%,
+	80% {
+		transform: rotate(10deg)
+	}
+}
+
+@media (max-width:500px) {
+	.github-corner:hover .octo-arm {
+		animation: none
+	}
+	.github-corner .octo-arm {
+		animation: octocat-wave 560ms ease-in-out
+	}
+}

@@ -1,0 +1,69 @@
+volumes:
+  serverBin:
+  serverObj:
+services:
+  client:
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - DISABLE_ESLINT_PLUGIN=true
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_CHATWOOT_TOKEN
+    volumes:
+      - ./client:/home/node/app
+    ports:
+      - "3000:3000"
+    command: "sh -c 'yarn install --frozen-lockfile && yarn start'"
+    depends_on:
+      - server
+  server:
+    stdin_open: true
+    tty: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    environment:
+      - ConnectionStrings__SessionContext
+      - ConnectionStrings__BlobStorage
+      - AllowedOrigins
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    depends_on:
+      - postgres
+      - storage-emulator
+    volumes:
+      - ./server:/source
+      - serverBin:/source/bin
+      - serverObj:/source/obj
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=companion
+    ports:
+      - "5432:5432"
+  storage-emulator:
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+  create-migrations:
+    stdin_open: true
+    tty: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile.migrations
+    environment:
+      - ConnectionStrings__SessionContext
+      - ConnectionStrings__BlobStorage
+      - AllowedOrigins
+    depends_on:
+      - postgres
+    volumes:
+      - ./server:/source
+      - serverBin:/source/bin
+      - serverObj:/source/obj

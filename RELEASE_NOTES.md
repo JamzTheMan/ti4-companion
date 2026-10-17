@@ -1,0 +1,106 @@
+# Welcome to release notes of TI4 companion
+
+You will find here a log of features introduced in the app.
+Bear in mind that release notes before 2022-08-14 were compiled post-factum and should not be considered accurate.
+
+## 2026-09-26
+- [feat] Import a completed TIDraft game using its game URL. The import includes factions, player names, player colors (mapped to this app's color palette), table order, and the shared galaxy map image. Slices are not imported. Session names are generated from the TIDraft URL, and the source draft is linked from the session overview and details.
+- [feat] Associate player names and colors with factions and edit them later in session details.
+- [feat] Includes the Drahn Consortium and updated faction reference sheets
+- [feat] Converted all faction sheets to WebP images to reduce image sizes and imported updated Thunders Edge versions from TI4Draft.com
+- [feat] Added confirmation dialog for scoring objectives
+
+## 2023-11-11
+- [feat] allowed users to copy and input session list ids
+
+## 2023-10-30
+- [improvement] improved plastic color assignment for mobile view on session details
+- [fix] plastic colors are correctly indicated on faction flags now
+- [fix] improve public objective scoring to prevent missing point updates
+
+## 2023-10-08
+- [fix] fixed broken point source, which was not updated together with integrity checks
+
+## 2023-09-24
+- [feat] Improved data integrity checks - users that do not see newest state should not be able to perform and actions that will affect draft/session state. This also means that the same event sent multiple times should not be applied, avoiding duplicating picks/bans during connectivity problems.
+
+## 2023-03-04
+- [feat] allow adding link to generated map (as well as a picture)
+
+## 2023-02-19
+- [fix] not showing "map positions" header in Details section for sessions that were not drafted
+- [feat] changed player plastic color picker to use the same picker as map position colors
+- [fix] correctly handling games where player exceeds VP target - show their points and correctly treat session as finished
+- [feat] map positions names and colors can now be set on draft setup and updated in "Details" in a session. map position name and color will show wherever applicable. for more info see [the PR](https://github.com/paxmagnifica/ti4-companion/pull/317)
+
+## 2023-01-14
+- [feat] added [/lets-fight](https://ti4companion.paxmagnifica.com/lets-fight) tool for simplifying dice rolling and hit counting in TI battles
+
+## 2023-01-03
+- [feat] added possibility to customize names of map positions on draft
+
+## 2022-11-06
+- [feat] improved point source helpers: showing points in descending order
+- [feat] improved point source helpers: added filter to show only points by specific faction/player<a href="https://user-images.githubusercontent.com/9142942/200198826-ac9092d3-67fc-4def-8a3a-1c9d34405269.png" target="blank"><img src="https://user-images.githubusercontent.com/9142942/200198826-ac9092d3-67fc-4def-8a3a-1c9d34405269.png" alt="timeline deltas" height="400px"/></a><a href="https://user-images.githubusercontent.com/9142942/200198831-e857c1ab-b001-43e9-b0ca-4945e4cfb696.png" target="blank"><img src="https://user-images.githubusercontent.com/9142942/200198831-e857c1ab-b001-43e9-b0ca-4945e4cfb696.png" alt="timeline deltas" height="400px"/></a>
+
+## 2022-10-17
+- [feat] added possibility to note Emphidia, Shard of the Throne, and an Agenda as sources of Victory Points
+
+## 2022-10-06
+- [feat] point deltas (+1 / +2 / -1) are now shown on Timeline and in the Victory Point Source helper: <a href="https://user-images.githubusercontent.com/9142942/194423603-5cd115a8-3035-429a-813f-01d312b72fd8.png" target="blank"><img src="https://user-images.githubusercontent.com/9142942/194423603-5cd115a8-3035-429a-813f-01d312b72fd8.png" alt="timeline deltas" height="400px"/></a><a href="https://user-images.githubusercontent.com/9142942/194423642-b65bae6d-7871-46a3-8b08-829478b3731e.png" target="_blank"><img src="https://user-images.githubusercontent.com/9142942/194423642-b65bae6d-7871-46a3-8b08-829478b3731e.png" alt="victory point source deltas" height="400px"/></a>
+- [fix] page title now shows the same session description as session overview
+
+## 2022-10-01
+- [feat] when searching for objectives - objective condition is shown and text you are searching for is highlighted (on both the objective name and condition) ![highlighted objective selector](https://user-images.githubusercontent.com/9142942/193400253-4a487857-d840-48c7-b5f0-2c3eea3a9c3d.png)
+- [improvement] when adding objectives, stage I, stage II and secret objectives are now exclusive categories
+
+## 2022-09-26
+- [improvement] hide "victory points source" button in fullscreen
+- [improvement] hide "victory points source" and "points control" sections when session is locked
+
+## 2022-09-24
+- [feat] Added new way of adding points to factions. Instead of clicking flags or dragging them, there is a grid of factions flags with "+1" and "-1". ![points control](https://user-images.githubusercontent.com/9142942/192339505-a9dc4c86-742e-454c-aba0-dead3e12b052.png)
+
+## 2022-07-21
+- [feat] If nobody selects speaker during draft, it is assigned randomly, excluding the last person who was picking and didn't select speaker. [PR](https://github.com/paxmagnifica/ti4-companion/pull/261)
+- [fix] Fixed Timeline - included Speaker Pick in the timeline and correctly assigns speaker based on pick [PR](https://github.com/paxmagnifica/ti4-companion/pull/263)
+- [feat] Added minimal tech tree to Knowledge Base - just an image of all the techs until we implement our own searchable tech library [PR](https://github.com/paxmagnifica/ti4-companion/pull/264)
+
+## 2022-07-14
+- [feat] Added the ability to select speaker position in addition to faction and table position when drafting. [PR](https://github.com/paxmagnifica/ti4-companion/pull/255)
+- [feat] Added release notes and link to them in the app footer. [PR](https://github.com/paxmagnifica/ti4-companion/pull/256)
+- [fix] Fixed player order stepper on draft to not break layout and to scroll active picking player into view [issue](https://github.com/paxmagnifica/ti4-companion/issues/257)
+- [feat] Added full search to objective selector - you can now type part of the objective text to have it sorted in the dropdown [issue](https://github.com/paxmagnifica/ti4-companion/issues/124)
+
+## 2022-07-12
+- [feat] Added game version configuration when starting a session. Data on cheatsheets and in Knowledge Base is now contextual to the selected version (base, PoK, C2, C3). [PR](https://github.com/paxmagnifica/ti4-companion/pull/252)
+
+## 2022-07-01
+- [fix] Fixed faction color coding on Victory Point tracker and session main view cheatsheets. [PR](https://github.com/paxmagnifica/ti4-companion/pull/250)
+
+## 2022-06-22
+- [fix] Fixed bug which caused players to be reordered after each ban round if banning in multiple rounds [PR](https://github.com/paxmagnifica/ti4-companion/pull/246)
+
+## 2022-06-12
+- [feat] Added keleres to available factions [PR](https://github.com/paxmagnifica/ti4-companion/pull/244)
+
+## 2022-04-26
+- [feat] Added panic page on application crashes [PR](https://github.com/paxmagnifica/ti4-companion/pull/242)
+- [fix] Fixed objective selector crash [PR](https://github.com/paxmagnifica/ti4-companion/pull/241)
+
+## 2022-04-17
+- [feat] Added Victory Points helper, which allows assigning context to VP gained by factions (i.e. Custodian/Mecatol/SFT etc.) [PR](https://github.com/paxmagnifica/ti4-companion/pull/236)
+
+## 2022-03-24
+- [feat] Added player ban/picks on player stepper during draft [PR](https://github.com/paxmagnifica/ti4-companion/pull/214)
+
+## 2022-02-25
+- [fix] Correctly use last selected speaker instead of the first, when multiple speaker assignments were made before committing draft [PR](https://github.com/paxmagnifica/ti4-companion/pull/208)
+
+## 2022-01-23
+- [feat] Added password protection to sessions [PR](https://github.com/paxmagnifica/ti4-companion/pull/186)
+
+## 2022-01-07
+- [feat] Added ability to set faction colors [issue](https://github.com/paxmagnifica/ti4-companion/issues/121)
+
+...
